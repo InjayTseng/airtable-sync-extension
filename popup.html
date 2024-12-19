@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Airtable Sync</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      width: 400px;
+      height: 600px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      font-size: 14px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .header-buttons {
+      display: flex;
+      gap: 4px;
+    }
+    .icon-button {
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+    }
+    .icon-button:hover {
+      background-color: #f0f0f0;
+    }
+    .icon-button i {
+      font-size: 14px;
+    }
+    .settings-btn {
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+    }
+    .settings-btn:hover {
+      background-color: #f0f0f0;
+    }
+    .settings-panel {
+      display: none;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+    .settings-panel.show {
+      display: block;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .field-group:last-child {
+      margin-bottom: 0;
+    }
+    label {
+      color: #333;
+      font-size: 13px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 13px;
+    }
+    .action-button {
+      background-color: #2196F3;
+      color: white;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      width: 100%;
+    }
+    .action-button:hover {
+      background-color: #1976D2;
+    }
+    #records {
+      flex: 1;
+      min-height: 0;
+      max-height: none;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .record {
+      border: 1px solid #E0E0E0;
+      padding: 12px;
+      border-radius: 8px;
+      background-color: #fff;
+    }
+    .timestamp {
+      color: #666;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .content-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .twitter-content {
+      flex-grow: 1;
+      margin: 0;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      color: #333;
+    }
+    .button-group {
+      display: flex;
+      gap: 4px;
+    }
+    .copy-btn, .link-btn {
+      background: none;
+      border: none;
+      color: #2196F3;
+      padding: 4px;
+      min-width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .copy-btn:hover, .link-btn:hover {
+      background-color: rgba(33, 150, 243, 0.1);
+    }
+    .copy-btn i, .link-btn i {
+      font-size: 14px;
+    }
+    .link-btn {
+      color: #666;
+    }
+    .link-btn:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 style="margin: 0; font-size: 16px;">AirFlow</h1>
+      <div class="header-buttons">
+        <button id="syncNow" class="icon-button" title="Sync Now">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+        <button id="toggleSettings" class="icon-button" title="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div id="settingsPanel" class="settings-panel">
+      <div class="field-group">
+        <label for="apiKey">Airtable API Key:</label>
+        <input type="password" id="apiKey" placeholder="Enter your Airtable API Key">
+      </div>
+      <div class="field-group">
+        <label for="baseId">Base ID:</label>
+        <input type="text" id="baseId" placeholder="Enter your Base ID">
+      </div>
+      <div class="field-group">
+        <label for="tableName">Table Name:</label>
+        <input type="text" id="tableName" placeholder="Enter your Table Name">
+      </div>
+      <button id="saveSettings" class="action-button">Save Settings</button>
+    </div>
+
+    <div id="records"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

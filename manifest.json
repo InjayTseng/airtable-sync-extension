@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "AirFlow - Airtable Record Fetcher",
+  "version": "1.0.0",
+  "description": "Instantly access and copy your latest Airtable records. Auto-syncs every 30 minutes with quick URL access and one-click copying.",
+  "permissions": [
+    "storage",
+    "alarms",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://api.airtable.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "author": "Injay Tseng",
+  "homepage_url": "https://github.com/injaytseng",
+  "minimum_chrome_version": "88"
+}
