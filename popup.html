@@ -67,6 +67,8 @@
       border-radius: 8px;
       padding: 12px;
       margin-bottom: 8px;
+      max-height: 100%;
+      overflow-y: auto;
     }
     .settings-panel.show {
       display: block;
@@ -169,6 +171,60 @@
     .link-btn:hover {
       background-color: rgba(0, 0, 0, 0.05);
     }
+    .form-group {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .tooltip-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: #2196F3;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      font-size: 12px;
+      margin-left: 5px;
+      cursor: help;
+      position: relative;
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      position: absolute;
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      width: 250px;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 25px;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .tooltip-text::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent #333 transparent;
+    }
+
+    .tooltip-icon:hover + .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -186,17 +242,33 @@
     </div>
     
     <div id="settingsPanel" class="settings-panel">
-      <div class="field-group">
-        <label for="apiKey">Airtable API Key:</label>
+      <div class="form-group">
+        <label for="apiKey">Airtable API Key:
+          <span class="tooltip-icon">?</span>
+          <span class="tooltip-text">Your Airtable API key can be found in your Airtable account settings under the API section. This is required to access your data.</span>
+        </label>
         <input type="password" id="apiKey" placeholder="Enter your Airtable API Key">
       </div>
-      <div class="field-group">
-        <label for="baseId">Base ID:</label>
+      <div class="form-group">
+        <label for="baseId">Base ID:
+          <span class="tooltip-icon">?</span>
+          <span class="tooltip-text">Your Base ID can be found in the Airtable API documentation when viewing your base. It starts with 'app' followed by alphanumeric characters.</span>
+        </label>
         <input type="text" id="baseId" placeholder="Enter your Base ID">
       </div>
-      <div class="field-group">
-        <label for="tableName">Table Name:</label>
+      <div class="form-group">
+        <label for="tableName">Table Name:
+          <span class="tooltip-icon">?</span>
+          <span class="tooltip-text">The exact name of the table you want to sync from your Airtable base. This is case-sensitive.</span>
+        </label>
         <input type="text" id="tableName" placeholder="Enter your Table Name">
+      </div>
+      <div class="form-group">
+        <label for="recordLimit">Number of Records:
+          <span class="tooltip-icon">?</span>
+          <span class="tooltip-text">Choose how many recent records to display (1-100). Higher numbers may affect loading time. Default is 50.</span>
+        </label>
+        <input type="number" id="recordLimit" placeholder="50" min="1" max="100">
       </div>
       <button id="saveSettings" class="action-button">Save Settings</button>
     </div>

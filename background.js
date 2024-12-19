@@ -21,14 +21,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Function to sync data from Airtable
 async function syncData() {
   try {
-    const { apiKey, baseId, tableName } = await chrome.storage.sync.get(['apiKey', 'baseId', 'tableName']);
+    const { apiKey, baseId, tableName, recordLimit } = await chrome.storage.sync.get(['apiKey', 'baseId', 'tableName', 'recordLimit']);
     
     if (!apiKey || !baseId || !tableName) {
       throw new Error('Please configure your Airtable settings first');
     }
 
+    const limit = recordLimit || '50'; // Default to 50 if not set
+    
     const response = await fetch(
-      `https://api.airtable.com/v0/${baseId}/${tableName}?sort%5B0%5D%5Bfield%5D=Last%20Modified%20Time&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=50`,
+      `https://api.airtable.com/v0/${baseId}/${tableName}?sort%5B0%5D%5Bfield%5D=Last%20Modified%20Time&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=${limit}`,
       {
         headers: {
           'Authorization': `Bearer ${apiKey}`,

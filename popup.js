@@ -14,10 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Load saved settings
-  chrome.storage.sync.get(['apiKey', 'baseId', 'tableName'], (result) => {
+  chrome.storage.sync.get(['apiKey', 'baseId', 'tableName', 'recordLimit'], (result) => {
     if (result.apiKey) document.getElementById('apiKey').value = result.apiKey;
     if (result.baseId) document.getElementById('baseId').value = result.baseId;
     if (result.tableName) document.getElementById('tableName').value = result.tableName;
+    if (result.recordLimit) document.getElementById('recordLimit').value = result.recordLimit || '50';
     
     // If no settings are saved, show the settings panel
     if (!result.apiKey || !result.baseId || !result.tableName) {
@@ -33,13 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiKey = document.getElementById('apiKey').value;
     const baseId = document.getElementById('baseId').value;
     const tableName = document.getElementById('tableName').value;
+    const recordLimit = document.getElementById('recordLimit').value || '50';
 
     if (!apiKey || !baseId || !tableName) {
       alert('Please fill in all fields');
       return;
     }
 
-    chrome.storage.sync.set({ apiKey, baseId, tableName }, () => {
+    chrome.storage.sync.set({ apiKey, baseId, tableName, recordLimit }, () => {
       settingsPanel.classList.remove('show');
       toggleSettings.querySelector('i').className = 'fas fa-cog';
       syncData(); // Sync after saving settings
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     records.forEach(record => {
       const recordDiv = document.createElement('div');
       recordDiv.className = 'record';
-      
+
       // Format the timestamp to match the screenshot
       const date = new Date(record.fields['Last Modified Time']);
       const timeString = date.toLocaleTimeString('zh-TW', {
@@ -94,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }).toLowerCase();
       const lastModified = `Last Modified: ${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${timeString}`;
       
-      const twitterPostCH = record.fields['Twitter Post CH'] || 'No content';
+      const twitterPostCH = record.fields['Name'] || 'No content';
       const url = record.fields['URL'] || '';
-      
+
       const content = `
         <div class="timestamp">${lastModified}</div>
         <div class="content-container">
@@ -129,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           icon.className = 'fas fa-copy';
         }, 1500);
-      });
+        });
 
       // Add click handler for link button if URL exists
       const linkBtn = recordDiv.querySelector('.link-btn');
